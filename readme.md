@@ -1,23 +1,23 @@
 # BaBee: An Autonomous Quadrotor for Agilicious-based Agents using Reinforcement Learning.
-The aim of this project is to autonomously flight an Agilicious-based agent using Reinforcement Learning. The physical properties of the drone can be found (and changed) in `/UAV`, and pretrained models in `/checkpoints` (removed in submission).
+This project aims to autonomously flight an Agilicious-based agent using Reinforcement Learning. The physical properties of the drone can be found (and changed) in `/UAV`, and pre-trained models in `/checkpoints` (removed in submission).
 
 The project aims to produce a Nominal model to flight the quadrotor, an Attacker model to make an optimal attack on the quadrotor's sensors as a Man-in-the-Middle, and a Defender model to provide an optimal countermeasure on the quadrotor's attack.
 
 
 ## Setup
-In order to setup your local python environment, you can simply pip install the necessary requirements by running:
+In order to set up your local Python environment, simply pip install the required libraries by running:
 
 ```pip install -r requirements.txt```
 
 
 ## Nominal Model
-The nominal model is the base agent that is responsible for taking actions in the environment. The nominal does not know whether it is under attack, and therefore takes deterministic actions.
+The nominal model is the base agent responsible for taking actions in the environment. The nominal does not know whether it is under attack and therefore takes deterministic actions.
 
 ### Training
-First, in order to setup the training and define parameters such as training time, evaluation settings, model hyperparameters, learning algorithms... you must refer to ```nominal/train.py```.
-We recommend only changing the parameters within the ```config``` dictionnary in that file.
+First, in order to set up the training and define parameters such as training time, evaluation settings, model hyperparameters, learning algorithms... you must refer to ```nominal/train.py```.
+We recommend only changing the parameters within the ```config```dictionary in that file.
 
-Then, to train a nominal agent, you must be in the root path of the project (`/babee`) and start training as follow:
+Then, to train a nominal agent, you must be in the root path of the project (`/babee`) and start training as follows:
 
 ```python3 -m models.nominal.train```
 
@@ -32,7 +32,7 @@ If you wish to evaluate a trained model, without going through the training pipe
 ```python3 -m models.nominal.evaluate -p path/to/nominal_model -e 20 -hp 1 1 1``` (do not include '.zip' extension for the model)
 
 where you can select from the below options:
- - -p (--model_path): absolute path of model to evaluate (required);
+ - -p (--model_path): absolute path to model to evaluate (required);
  - -e (--nb_eval_episodes): number of episodes per evaluation (required);
  - -hp (--hover_point): coordinates of the hover point formatted as '0 -1 2' (required);
  - -dv (--disable_visual_eval): flag to disable visualisation of the environment during evaluation.
@@ -48,7 +48,7 @@ The training of the Attacker model is done in a very similar way as the Nominal.
 
 
 ## Defender Model
-The defender model is the agent trained to provide an optimal countermeasure on the quadrotor's attack. It is trained to maintain stability of the Nominal under attack, with as little energy cost as possible.
+The defender model is the agent trained to provide an optimal countermeasure on the quadrotor's attack. It is trained to maintain the stability of the Nominal under attack, with as little energy cost as possible.
 
 ### Training & Evaluation
 The training of the Defender model is done in a very similar way as the Nominal. The two only differences are:
