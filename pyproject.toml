@@ -1,0 +1,24 @@
+[project]
+name = "babee"
+version = "1.0"
+authors = [
+  { name="Samuel Belkadi", email="belkadisamuel@gmail.com" },
+]
+description = "BaBee: An Autonomous Quadrotor for Agilicious-based Agents using Reinforcement Learning."
+readme = "readme.md"
+requires-python = ">=3.8"
+keywords = ["Reinforcement Learning", "UAVs", "drones", "Quadcopter", "AI", "RL", "Gymnasium"]
+
+[project.optional-dependencies]
+dev = ["pytest", "pre-commit", "matplotlib"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["babee", "babee.*"]
+
+[tool.setuptools.package-data]
+babee = [
+    "models/**",
+]
