@@ -14,7 +14,7 @@ In order to set up your local Python environment, simply pip install the require
 The nominal model is the base agent responsible for taking actions in the environment. The nominal does not know whether it is under attack and therefore takes deterministic actions.
 
 ### Training
-First, in order to set up the training and define parameters such as training time, evaluation settings, model hyperparameters, learning algorithms, etc; you must refer to ```nominal/train.py```.
+First, in order to set up the training and define parameters such as training time, evaluation settings, model hyperparameters, learning algorithms, number of parallel environments, etc; you must refer to ```nominal/train.py```.
 We recommend only changing the parameters within the ```config```dictionary in that file.
 
 Then, to train a nominal agent, you must be in the root path of the project (`/babee`) and start training as follows:
