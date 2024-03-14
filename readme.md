@@ -33,7 +33,8 @@ Note that, additional training and evaluation performance metrics are reported t
 ### Evaluation 
 If you wish to evaluate a trained model without going through the training pipeline, you can run the following command:
 
-```python3 -m models.nominal.evaluate -p path/to/nominal_model -e 20 -hp 1 1 1``` (do not include '.zip' extension for the model)
+```python3 -m models.nominal.evaluation.evaluate -p path/to/model -e 20 -hp 1 1 1``` 
+(do not include '.zip' extension for the model, and make sure the model is from a training checkpoint such as `models/nominal/runs/2024-03-14/23-44-07/model-99K-iter/model` for example.)
 
 where you can select from the below options:
  - -p (--model_path): absolute path to model to evaluate (required);
