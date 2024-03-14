@@ -1,5 +1,5 @@
 # BaBee: An Autonomous Quadrotor for Agilicious-based Agents using Reinforcement Learning.
-This project aims to autonomously flight an Agilicious-based agent using Reinforcement Learning. The physical properties of the drone can be found (and changed) in `/UAV`, and pre-trained models in `/checkpoints` (removed in submission).
+This project aims to autonomously flight an Agilicious-based agent using Reinforcement Learning. The physical properties of the drone can be found (and changed) in `/UAV`, and pre-trained models in `/checkpoints`.
 
 The project aims to produce a Nominal model to flight the quadrotor, an Attacker model to make an optimal attack on the quadrotor's sensors as a Man-in-the-Middle, and a Defender model to provide an optimal countermeasure on the quadrotor's attack.
 
