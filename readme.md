@@ -35,13 +35,13 @@ If you wish to evaluate a trained model without going through the training pipel
 
 ```python3 -m models.nominal.evaluation.evaluate -p path/to/model -e 20 -hp 1 1 1``` 
 
-(do not include '.zip' extension for the model, and make sure the model is from a training checkpoint such as `models/nominal/runs/2024-03-14/23-44-07/model-99K-iter/model` for example.)
-
 where you can select from the below options:
  - -p (--model_path): absolute path to model to evaluate (required);
  - -e (--nb_eval_episodes): number of episodes per evaluation (required);
  - -hp (--hover_point): coordinates of the hover point formatted as '0 -1 2' (required);
  - -dv (--disable_visual_eval): flag to disable visualisation of the environment during evaluation.
+
+(do not include '.zip' extension for the model, and make sure the model is from a training checkpoint such as `models/nominal/runs/2024-03-14/23-44-07/model-99K-iter/model` for example.)
 
 
 ## Attacker Model
