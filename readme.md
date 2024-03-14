@@ -1,6 +1,8 @@
 # BaBee: An Autonomous Quadrotor for Agilicious-based Agents using Reinforcement Learning.
 This project aims to autonomously flight an Agilicious-based agent using Reinforcement Learning. The physical properties of the quadrotor can be found (and changed) in `/UAV`, and pre-trained models in `/checkpoints`.
 
+![Agilicious-based Agent Flying](docs/imgs/agilicious-flight.gif)
+
 Was produced: a Nominal model to flight the quadrotor, an Attacker model to make an optimal attack on the quadrotor's sensors as a Man-in-the-Middle, and a Defender model to provide an optimal countermeasure on the quadrotor's attack.
 
 
@@ -8,6 +10,8 @@ Was produced: a Nominal model to flight the quadrotor, an Attacker model to make
 In order to set up your local Python environment, simply pip install the required libraries by running:
 
 ```pip install -r requirements.txt```
+
+For more documentation on the physical quadrotor used (Agilicious), how to assemble it, set it up, etc; please refer to `/docs`.
 
 
 ## Nominal Model
