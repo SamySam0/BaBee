@@ -25,7 +25,7 @@ wandb.login(key='7425c67d3c5151a3744fe900a66cc0a3850c0858')
 config = {
     "policy_type": 'MlpPolicy',
 
-    "total_training_timesteps": 1_600_000,
+    "total_training_timesteps": 3_000_000,
     "checkpoint_frequency": (150_000//3)*3,  # This must by a multiple of the number of parallel environments
     "eval_frequency": (30_000//3)*3,         # This must by a multiple of the number of parallel environments
     "nb_eval_episodes": 20,
@@ -34,17 +34,16 @@ config = {
     "eval_hover_point": [0.0, -1.0, 2.0],
 
     "model": 'Agilicious',
-    "save_path": f'models/defender/runs/{datetime.now().strftime("%Y-%m-%d/%H-%M-%S")}',
     "nb_parallel_env": 3,
 }
 
 # Generate all combinations of hyperparameters
 H = {
     'architecture' : [[64, 64], [128, 64]],
-    'learning_rate': [5e-5, 3e-4, 1e-4],
-    'batch_size'   : [96, 192],
-    'gamma'        : [0.95], # 0.99
-    'n_steps'      : [2_560, 5_120],
+    'learning_rate': [3e-4, 1e-4],
+    'batch_size'   : [128, 256],
+    'gamma'        : [0.99], # 0.99
+    'n_steps'      : [5_120, 10_240],
 }
 
 keys, values = zip(*H.items())
@@ -56,7 +55,8 @@ for hyperparam in H:
     config['hyperparameters'] = hyperparam
 
     # Add run's information to config
-    config['run_name'] = f"DEF_arch={'A' if sum(hyperparam['architecture']) == 128 else 'B'}, lr={round(hyperparam['learning_rate'],6)}, bs={hyperparam['batch_size']}, gamma=.95, T={hyperparam['n_steps']}"
+    config['run_name'] = f"DEF_arch={'A' if sum(hyperparam['architecture']) == 128 else 'B'}, lr={round(hyperparam['learning_rate'],6)}, bs={hyperparam['batch_size']}, gamma=.99, T={hyperparam['n_steps']}"
+    config['save_path'] = f'models/defender/runs/{datetime.now().strftime("%Y-%m-%d/%H-%M-%S")}'
 
     # Define W&B (logging system) run 
     run = wandb.init(
