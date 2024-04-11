@@ -13,10 +13,11 @@ if __name__ == "__main__":
 
     # Parse commandline arguments
     parser = argparse.ArgumentParser(description="Select options for evaluation stage.")
-    parser.add_argument("-p", "--model_path", type=str, required=True, help="Path to model to evaluate.")
-    parser.add_argument("-e", "--nb_eval_episodes", type=int, required=True, help="Number of episodes per evaluation.")
+    parser.add_argument("-p",  "--model_path", type=str, required=True, help="Path to model to evaluate.")
+    parser.add_argument("-e",  "--nb_eval_episodes", type=int, required=True, help="Number of episodes per evaluation.")
     parser.add_argument("-hp", "--hover_point", nargs=3, required=True, help="Coordinates of the hover point formatted as '0 -1 2'. ")
     parser.add_argument("-dv", "--disable_visual_eval", dest='visual_eval', action='store_false', help="Disables visualisation at each evaluation stage.")
+    parser.add_argument("-n",  "--eval_name", type=str, required=False, default="", help="Name for this evaluation.")
     args = parser.parse_args()
 
     # Fetch parsed constants
@@ -24,9 +25,10 @@ if __name__ == "__main__":
     EVAL_HOVER_POINT = np.array([round(float(c), 1) for c in args.hover_point])
     N_EVAL_EPISODES  = args.nb_eval_episodes
     VISUAL_EVAL = args.visual_eval
+    EVAL_NAME = f'/{args.eval_name}' if len(args.eval_name) > 0 else ''
 
     # Fetch evaluation results path (same as model location)
-    PLOT_SAVE_PATH = '/'.join(MODEL_PATH.split('/')[:-1]) + '/evaluation'
+    PLOT_SAVE_PATH = '/'.join(MODEL_PATH.split('/')[:-1]) + '/evaluation' + EVAL_NAME
 
     # Load evaluation environments
     eval_env = Monitor(QuadXHoverAgiliciousDefEnv(
