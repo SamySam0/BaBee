@@ -1,9 +1,9 @@
 import subprocess, os
 
 MODELS = {
-    # 'nominal':  'models/nominal/model-1_899K-iter-SUPER',
-    # 'attacker': 'models/attacker/model-2_012K-iter-SUPER',
-    # 'defender': 'models/defender/model-3_010K-iter',
+    # 'nominal':  'checkpoints/paper_results/model-1_899K-iter-NOM',
+    # 'attacker': 'checkpoints/paper_results/model-2_012K-iter-ATT',
+    # 'defender': 'checkpoints/paper_results/model-3_010K-iter-DEF',
 }
 
 HOVER_POINTS = [
