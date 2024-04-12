@@ -1,4 +1,4 @@
-import torch, copy
+import torch, copy, random, math
 import numpy as np
 from utils.graph_plotting import plot_distance_to_hover, plot_position_in_3d_space
 from stable_baselines3.common.on_policy_algorithm import obs_as_tensor
@@ -6,7 +6,7 @@ from models.nominal.evaluation.evaluators import get_results_of_single_sim as ge
 
 
 # Get merged and clip action from both nominal and attacker models
-def get_merged_action(observation, nominal, attacker, defender):
+def get_merged_action(observation, nominal, attacker, defender, step):
     # Transform observation nparray into tensor
     obs = obs_as_tensor(np.array([observation]), device='cpu')
 
@@ -17,7 +17,11 @@ def get_merged_action(observation, nominal, attacker, defender):
         action_d = defender.policy._predict(obs, deterministic=True)    # And Defender model should also be deterministic
     
     # Merge and clip actions
-    action = action_n + action_a + action_d
+    if step > 120*2:
+        # random_attack = np.array([random.uniform(-math.pi/3, math.pi/3), random.uniform(-math.pi/3, math.pi/3), 0, 0]) # random attack cannot directly generate collective thrust
+        action = action_n + action_a + action_d
+    else:
+        action = action_n
     action = np.clip(action.cpu().numpy(), defender.action_space.low, defender.action_space.high)[0]
     return action
 
@@ -27,25 +31,29 @@ def visual_evaluation(nominal_model, attacker_model, defender_model, eval_env, n
     obs, _ = eval_env.reset()
 
     # Simple simulation for visual analysis
-    run_id = 0
+    run_id, step = 0, 0
     while run_id < n_eval_episodes:
-        action = get_merged_action(observation=obs, nominal=nominal_model, attacker=attacker_model, defender=defender_model)
+        action = get_merged_action(observation=obs, nominal=nominal_model, attacker=attacker_model, defender=defender_model, step=step)
         obs, _, done, trunc, _ = eval_env.step(action)
+        step += 1
         if done or trunc:
             obs, _ = eval_env.reset()
             run_id += 1
+            step = 0
 
 
 # Get coordinates of drone at each timestep over a single simulation
 def get_results_of_single_sim(nominal_model, attacker_model, defender_model, eval_env):
     xs, ys, zs = [], [], []
     obs, _ = eval_env.reset()
+    step = 0
 
     # Launch a single simulation (until terminates)
     while True:
-        action = get_merged_action(observation=obs, nominal=nominal_model, attacker=attacker_model, defender=defender_model)
+        action = get_merged_action(observation=obs, nominal=nominal_model, attacker=attacker_model, defender=defender_model, step=step)
         obs, _, done, trunc, _ = eval_env.step(action)
         lin_pos = obs[10:13]
+        step += 1
 
         # Record X, Y and Z coordinates
         xs.append(lin_pos[0])
@@ -54,6 +62,7 @@ def get_results_of_single_sim(nominal_model, attacker_model, defender_model, eva
 
         if done or trunc:
             obs, _ = eval_env.reset()
+            step = 0
             break
     
     return xs, ys, zs
