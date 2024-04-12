@@ -25,7 +25,7 @@ wandb.login(key='7425c67d3c5151a3744fe900a66cc0a3850c0858')
 config = {
     "policy_type": 'MlpPolicy',
 
-    "total_training_timesteps": 2_000_000,
+    "total_training_timesteps": 3_000_000,
     "checkpoint_frequency": (100_000//3)*3,  # This must by a multiple of the number of parallel environments
     "eval_frequency": (50_000//3)*3,         # This must by a multiple of the number of parallel environments
     "nb_eval_episodes": 20,
@@ -38,17 +38,17 @@ config = {
     "nb_parallel_env": 3,
 
     "hyperparameters": {
-        'architecture': [128, 64],
-        'learning_rate': 3e-4,
+        'architecture': [64, 64],
+        'learning_rate': 1e-4,
         'batch_size'   : 128,
         'gamma'        : 0.99,
-        'n_steps'      : 2_560,             # This will be multiplied by the number of parallel environments
+        'n_steps'      : 5_120,             # This will be multiplied by the number of parallel environments
     },
 }
 
 # Define W&B (logging system) run 
 run = wandb.init(
-    project="ROBOTO",
+    project="ROBOTO-AGIL",
     config=config,
     sync_tensorboard=True,
     monitor_gym=True,
