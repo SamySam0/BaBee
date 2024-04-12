@@ -6,7 +6,7 @@ from models.nominal.evaluation.evaluators import get_results_of_single_sim as ge
 
 
 # Get merged and clip action from both nominal and attacker models
-def get_merged_action(observation, nominal, attacker):
+def get_merged_action(observation, nominal, attacker, step):
     # Transform observation nparray into tensor
     obs = obs_as_tensor(np.array([observation]), device='cpu')
 
@@ -16,7 +16,10 @@ def get_merged_action(observation, nominal, attacker):
         action_n = nominal.policy._predict(obs, deterministic=True)     # However, Nominal model should be deterministic
     
     # Merge and clip actions
-    action = action_n + action_a
+    if step > 120*2:
+        action = action_n + action_a
+    else:
+        action = action_n
     action = np.clip(action.cpu().numpy(), attacker.action_space.low, attacker.action_space.high)[0]
     return action
 
@@ -26,25 +29,29 @@ def visual_evaluation(nominal_model, attacker_model, eval_env, n_eval_episodes):
     obs, _ = eval_env.reset()
 
     # Simple simulation for visual analysis
-    run_id = 0
+    run_id, step = 0, 0
     while run_id < n_eval_episodes:
-        action = get_merged_action(observation=obs, nominal=nominal_model, attacker=attacker_model)
+        action = get_merged_action(observation=obs, nominal=nominal_model, attacker=attacker_model, step=step)
         obs, _, done, trunc, _ = eval_env.step(action)
+        step += 1
         if done or trunc:
             obs, _ = eval_env.reset()
             run_id += 1
+            step = 0
 
 
 # Get coordinates of drone at each timestep over a single simulation
 def get_results_of_single_sim(nominal_model, attacker_model, eval_env):
     xs, ys, zs = [], [], []
     obs, _ = eval_env.reset()
+    step = 0
 
     # Launch a single simulation (until terminates)
     while True:
-        action = get_merged_action(observation=obs, nominal=nominal_model, attacker=attacker_model)
+        action = get_merged_action(observation=obs, nominal=nominal_model, attacker=attacker_model, step=step)
         obs, _, done, trunc, _ = eval_env.step(action)
         lin_pos = obs[10:13]
+        step += 1
 
         # Record X, Y and Z coordinates
         xs.append(lin_pos[0])
@@ -53,6 +60,7 @@ def get_results_of_single_sim(nominal_model, attacker_model, eval_env):
 
         if done or trunc:
             obs, _ = eval_env.reset()
+            step = 0
             break
     
     return xs, ys, zs
