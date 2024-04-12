@@ -123,8 +123,8 @@ class QuadXHoverAgiliciousDefEnv(QuadXBase):
             ang_vel, lin_vel = np.linalg.norm(self.env.state(0)[0]), np.linalg.norm(self.env.state(0)[2])
             ang_dist = np.linalg.norm(self.env.state(0)[1][:2])
 
-            action_cost = sum(self.action)
+            action_cost = sum([max(i, 0) for i in self.action])
 
             self.reward -= (dist_to_hover*1.5 + ang_dist)
-            self.reward -= action_cost
+            # self.reward -= action_cost/2
             self.reward += 1.5
