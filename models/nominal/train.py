@@ -40,13 +40,13 @@ config = {
         'learning_rate': 3e-4,
         'batch_size'   : 128,
         'gamma'        : 0.99,
-        'n_steps'      : 2_560,             # This will be multiplied by the number of parallel environments
+        'n_steps'      : 5120,              # This will be multiplied by the number of parallel environments
     },
 }
 
 # Define W&B (logging system) run 
 run = wandb.init(
-    project="ROBOTO",
+    project="ROBOTO-AGIL",
     config=config,
     sync_tensorboard=True,
     monitor_gym=True,
