@@ -1,4 +1,4 @@
-import torch
+import torch, random
 from stable_baselines3.common.on_policy_algorithm import *
 from stable_baselines3 import PPO
 
@@ -20,6 +20,7 @@ def rollout_collection(self, env, callback, rollout_buffer, n_rollout_steps, nom
         self.policy.reset_noise(env.num_envs)
 
     callback.on_rollout_start()
+    attacked = random.choices([True, False], weights=[0.65, 0.35])[0]
 
     while n_steps < n_rollout_steps:
         if self.use_sde and self.sde_sample_freq > 0 and n_steps % self.sde_sample_freq == 0:
@@ -34,7 +35,10 @@ def rollout_collection(self, env, callback, rollout_buffer, n_rollout_steps, nom
             actions_attacker, _, _ = attacker.policy(obs_tensor) 
             actions_defender, values_defender, log_probs_defender = self.policy(obs_tensor) 
 
-            combined_actions = actions_nominal + actions_defender + actions_attacker
+            if attacked: 
+                combined_actions = actions_nominal + actions_defender + actions_attacker
+            else:
+                combined_actions = actions_nominal + actions_defender
 
         combined_actions = combined_actions.cpu().numpy() 
         actions_defender = actions_defender.cpu().numpy() 
@@ -80,6 +84,7 @@ def rollout_collection(self, env, callback, rollout_buffer, n_rollout_steps, nom
                 with torch.no_grad():
                     terminal_value = self.policy.predict_values(terminal_obs)[0]  # type: ignore[arg-type]
                 rewards[idx] += self.gamma * terminal_value
+                attacked = random.choices([True, False], weights=[0.65, 0.35])[0]
 
         rollout_buffer.add(
             self._last_obs,  # type: ignore[arg-type]
