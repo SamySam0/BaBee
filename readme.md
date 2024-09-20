@@ -60,3 +60,15 @@ The defender model is the agent trained to provide an optimal countermeasure on 
 The training of the Defender model is done in a very similar way as the Nominal. The two only differences are:
  1. For all absolute paths, replace `nominal` with `defender`.
  2. You must first train nominal and attacker models before training/evaluating a defender. That is because the Defender is learned on top of the Nominal and the Attacker. For that, you must either include those models in `/checkpoints` as `/checkpoints/nominal_model.zip` and `/checkpoints/attacker_model.zip`; or include such models anywhere else in the repository and change the paths in `models/defender/learning/rollout_collection.py` accordingly.
+
+## Thank you
+Feel free to use the source code for any research purpose.
+
+### If you use this repository, please cite:
+```
+@journal{belkadi2024securecontrolsystems,
+      title={Secure Control Systems for Autonomous Quadrotors against Cyber-Attacks}, 
+      author={Samuel Belkadi},
+      year={2024},
+}
+```
